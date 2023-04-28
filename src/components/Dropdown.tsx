@@ -51,6 +51,9 @@ const Dropdown = ({
       if (selected.map((item) => item.value).includes(option.value)) {
         option.selected = false;
         setSelected(selected.filter((item) => item.value !== option.value));
+        if (selected.length <= 1) {
+          setShowMenu(false);
+        }
       } else {
         option.selected = true;
         setSelected([...selected, option]);
