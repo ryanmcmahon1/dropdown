@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as CloseIcon } from "../close.svg";
+import { ReactComponent as ArrowIcon } from "../down-arrow.svg";
 
 interface InputOption {
   value: string;
@@ -89,7 +90,7 @@ const Dropdown = ({
           <CloseIcon
             height="12px"
             width="12px"
-            style={{ marginLeft: "8px" }}
+            style={{ marginLeft: "8px", cursor: "pointer" }}
             onClick={(e) => {
               e.stopPropagation();
               option.selected = false;
@@ -133,7 +134,7 @@ const Dropdown = ({
             setShowMenu(false);
           }
         }}
-        style={option.selected ? { backgroundColor: "#63A1EB" } : {}}
+        style={option.selected ? { backgroundColor: "#57A4FE" } : {}}
       >
         {multiple && (
           <input type="checkbox" checked={option.selected} readOnly />
@@ -152,12 +153,20 @@ const Dropdown = ({
         }}
         ref={selectRef}
       >
-        <SelectItems />
+        <SelectContainer>
+          <SelectItems />
+        </SelectContainer>
+        <ArrowIcon
+          height="18px"
+          width="18px"
+          style={{ cursor: "pointer", minWidth: "18px", marginLeft: "8px" }}
+        />
       </Select>
       {showMenu && (
         <Menu>
           {multiple && (
             <StyledMenuItem
+              style={{ fontWeight: "600", backgroundColor: "lightgray" }}
               onClick={(e) => {
                 let updatedSelected: Array<Option> = [];
                 if (optionsMemo.length === selected.length) {
@@ -179,6 +188,7 @@ const Dropdown = ({
                 : "Select all"}
             </StyledMenuItem>
           )}
+          <hr style={{ margin: "0px" }} />
           {optionsMemo.map((option: Option) => {
             return <MenuItem option={option} key={option.value} />;
           })}
@@ -192,16 +202,22 @@ const Select = styled.div`
   border: 1px solid black;
   border-radius: 4px;
   padding: 8px;
-  max-height: 200px;
-  cursor: pointer;
+  max-height: 400px;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
   overflow-y: scroll;
   user-select: none;
   ::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const SelectContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 interface StyledSelectItemProps {
@@ -210,9 +226,11 @@ interface StyledSelectItemProps {
 
 const StyledSelectItem = styled.div<StyledSelectItemProps>`
   padding: 8px;
+  margin: ${(props) => (props.multiple ? "2px" : "0px")};
   width: fit-content;
   border: ${(props) => (props.multiple ? "1px solid gray" : "none")};
   border-radius: ${(props) => (props.multiple ? "12px" : "")};
+  cursor: default;
 `;
 
 const Menu = styled.div`
