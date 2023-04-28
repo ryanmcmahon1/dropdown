@@ -12,15 +12,21 @@ interface Option extends InputOption {
 }
 
 interface DropdownProps {
+  // Array of objects containing value, label
   options: Array<InputOption>;
+  // Optional placeholder text
   placeholder?: string;
+  // Controls if multiple options can be selected
   multiple?: boolean;
+  // Triggers whenever selected value changes (can be used to track selected values in parent component)
+  onChange?: (updatedValue: Array<Option>) => void;
 }
 
 const Dropdown = ({
   options,
   placeholder,
   multiple,
+  onChange,
 }: DropdownProps): React.ReactElement => {
   const [selected, setSelected] = useState<Array<Option>>([]);
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -46,23 +52,32 @@ const Dropdown = ({
   });
 
   const handleMenuItemClick = (option: Option): void => {
+    let updatedSelected: Array<Option> = [];
+
     if (multiple) {
       if (selected.map((item) => item.value).includes(option.value)) {
         option.selected = false;
-        setSelected(selected.filter((item) => item.value !== option.value));
+        updatedSelected = selected.filter(
+          (item) => item.value !== option.value
+        );
         if (selected.length <= 1) {
           setShowMenu(false);
         }
       } else {
         option.selected = true;
-        setSelected([...selected, option]);
+        updatedSelected = [...selected, option];
       }
     } else {
       if (selected.length > 0) {
         selected[0].selected = false;
       }
       option.selected = true;
-      setSelected([option]);
+      updatedSelected = [option];
+    }
+
+    setSelected(updatedSelected);
+    if (onChange) {
+      onChange(updatedSelected);
     }
   };
 
@@ -77,9 +92,13 @@ const Dropdown = ({
             onClick={(e) => {
               e.stopPropagation();
               option.selected = false;
-              setSelected(
-                selected.filter((item) => item.value !== option.value)
+              const updatedSelected = selected.filter(
+                (item) => item.value !== option.value
               );
+              setSelected(updatedSelected);
+              if (onChange) {
+                onChange(updatedSelected);
+              }
               setShowMenu(false);
             }}
           />
@@ -124,7 +143,7 @@ const Dropdown = ({
   };
 
   return (
-    <>
+    <StyledDiv>
       <Select
         onClick={(e) => {
           e.stopPropagation();
@@ -138,14 +157,19 @@ const Dropdown = ({
         <Menu>
           {multiple && (
             <StyledMenuItem
-              onClick={() => {
+              onClick={(e) => {
+                let updatedSelected: Array<Option> = [];
                 if (optionsMemo.length === selected.length) {
                   optionsMemo.forEach((option) => (option.selected = false));
-                  setSelected([]);
-                  setShowMenu(false);
                 } else {
+                  e.stopPropagation();
                   optionsMemo.forEach((option) => (option.selected = true));
-                  setSelected(optionsMemo);
+                  updatedSelected = optionsMemo;
+                }
+
+                setSelected(updatedSelected);
+                if (onChange) {
+                  onChange(updatedSelected);
                 }
               }}
             >
@@ -159,7 +183,7 @@ const Dropdown = ({
           })}
         </Menu>
       )}
-    </>
+    </StyledDiv>
   );
 };
 
@@ -198,6 +222,11 @@ const StyledMenuItem = styled.div`
   &:hover {
     background-color: #accef7;
   }
+`;
+
+const StyledDiv = styled.div`{
+  display: flex;
+  flex-direction: column;
 `;
 
 export default Dropdown;
