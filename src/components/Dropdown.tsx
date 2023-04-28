@@ -206,6 +206,7 @@ interface StyledSelectItemProps {
 
 const StyledSelectItem = styled.div<StyledSelectItemProps>`
   padding: 4px;
+  width: fit-content;
   border: ${(props) => (props.multiple ? "1px solid gray" : "none")};
   border-radius: ${(props) => (props.multiple ? "12px" : "")};
 `;
@@ -227,6 +228,7 @@ const StyledMenuItem = styled.div`
 const StyledDiv = styled.div`{
   display: flex;
   flex-direction: column;
+  padding: 8px;
 `;
 
 export default Dropdown;
