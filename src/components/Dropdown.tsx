@@ -69,7 +69,6 @@ const Dropdown = ({
             width="12px"
             onClick={(e) => {
               e.stopPropagation();
-              console.log("clicked on close icon");
               option.selected = false;
               setSelected(
                 selected.filter((item) => item.value !== option.value)
@@ -101,7 +100,6 @@ const Dropdown = ({
       <StyledMenuItem
         key={option.value}
         onClick={() => {
-          console.log("clicked on menu item");
           handleMenuItemClick(option);
           if (!multiple) {
             setShowMenu(false);
@@ -123,7 +121,6 @@ const Dropdown = ({
         onClick={(e) => {
           e.preventDefault();
           setShowMenu(!showMenu);
-          console.log("clicked on select");
         }}
         ref={selectRef}
       >
