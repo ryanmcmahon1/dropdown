@@ -158,11 +158,12 @@ const Dropdown = ({
         </SelectContainer>
         <div style={{ height: "100%", alignItems: "center", display: "flex" }}>
           <ArrowIcon
-            height="18px"
-            width="18px"
+            height="16px"
+            width="16px"
             style={{
-              minWidth: "18px",
+              minWidth: "16px",
               marginLeft: "8px",
+              transform: showMenu ? "rotate(180deg)" : "",
             }}
           />
         </div>
@@ -171,7 +172,7 @@ const Dropdown = ({
         <Menu>
           {multiple && (
             <StyledMenuItem
-              style={{ fontWeight: "600", backgroundColor: "lightgray" }}
+              style={{ fontWeight: "600", backgroundColor: "#F0F0F0" }}
               onClick={(e) => {
                 let updatedSelected: Array<Option> = [];
                 if (optionsMemo.length === selected.length) {
@@ -204,19 +205,15 @@ const Dropdown = ({
 };
 
 const Select = styled.div`
-  border: 1px solid #accef7;
+  border: 2px solid #accef7;
   border-radius: 4px;
   padding: 8px;
   max-height: 400px;
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  overflow-y: scroll;
-  ::-webkit-scrollbar {
-    display: none;
-  }
   &:hover {
-    border: 1px solid #57a4fe;
+    border: 2px solid #57a4fe;
   }
 `;
 
@@ -224,6 +221,10 @@ const SelectContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 interface StyledSelectItemProps {
@@ -232,12 +233,15 @@ interface StyledSelectItemProps {
 
 const StyledSelectItem = styled.div<StyledSelectItemProps>`
   padding: 8px;
-  margin: ${(props) => (props.multiple ? "2px" : "0px")};
+  margin: ${(props) => (props.multiple ? "4px" : "0px")};
   width: fit-content;
-  border: ${(props) => (props.multiple ? "1px solid gray" : "none")};
+  border: ${(props) => (props.multiple ? "2px solid #73B4FF" : "none")};
   border-radius: ${(props) => (props.multiple ? "12px" : "")};
-  background-color: ${(props) => (props.multiple ? "#F5F5F5" : "")};
+  background-color: ${(props) => (props.multiple ? "#ACCEF7" : "")};
   cursor: default;
+  &:hover {
+    border: 2px solid #0078ff;
+  }
 `;
 
 const Menu = styled.div`
