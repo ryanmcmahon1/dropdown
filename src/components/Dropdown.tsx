@@ -25,7 +25,6 @@ const Dropdown = ({
   const [selected, setSelected] = useState<Array<Option>>([]);
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const selectRef = useRef<HTMLInputElement>(null);
-  const menuRef = useRef<HTMLInputElement>(null);
 
   const optionsMemo: Array<Option> = useMemo(
     () => structuredClone(options),
@@ -33,18 +32,18 @@ const Dropdown = ({
   );
 
   // closes menu if user clicks outside of select
-  // useEffect(() => {
-  //   function handleExternalClick(e: any) {
-  //     if (selectRef.current && !selectRef.current.contains(e.target)) {
-  //       setShowMenu(false);
-  //     }
-  //   }
+  useEffect(() => {
+    function handleExternalClick(e: any) {
+      if (selectRef.current && !selectRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
+    }
 
-  //   window.addEventListener("click", handleExternalClick);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleExternalClick);
-  //   };
-  // });
+    window.addEventListener("click", handleExternalClick);
+    return () => {
+      document.removeEventListener("mousedown", handleExternalClick);
+    };
+  });
 
   const handleMenuItemClick = (option: Option): void => {
     if (multiple) {
@@ -107,7 +106,8 @@ const Dropdown = ({
     return (
       <StyledMenuItem
         key={option.value}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           handleMenuItemClick(option);
           if (!multiple) {
             setShowMenu(false);
@@ -127,7 +127,7 @@ const Dropdown = ({
     <>
       <Select
         onClick={(e) => {
-          e.preventDefault();
+          e.stopPropagation();
           setShowMenu(!showMenu);
         }}
         ref={selectRef}
@@ -135,7 +135,7 @@ const Dropdown = ({
         <SelectItems />
       </Select>
       {showMenu && (
-        <Menu ref={menuRef}>
+        <Menu>
           {multiple && (
             <StyledMenuItem
               onClick={() => {
@@ -170,6 +170,7 @@ const Select = styled.div`
   cursor: pointer;
   max-height: 200px;
   overflow-y: scroll;
+  user-select: none;
   ::-webkit-scrollbar {
     display: none;
   }
