@@ -240,7 +240,7 @@ const StyledSelectItem = styled.div<StyledSelectItemProps>`
   background-color: ${(props) => (props.multiple ? "#E5EFFB" : "")};
   cursor: default;
   &:hover {
-    border: 2px solid #0078ff;
+    border: ${(props) => (props.multiple ? "2px solid #0078FF" : "none")};
   }
 `;
 
