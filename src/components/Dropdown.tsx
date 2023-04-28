@@ -89,6 +89,7 @@ const Dropdown = ({
           <CloseIcon
             height="12px"
             width="12px"
+            style={{ marginLeft: "8px" }}
             onClick={(e) => {
               e.stopPropagation();
               option.selected = false;
@@ -191,8 +192,11 @@ const Select = styled.div`
   border: 1px solid black;
   border-radius: 4px;
   padding: 8px;
-  cursor: pointer;
   max-height: 200px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   overflow-y: scroll;
   user-select: none;
   ::-webkit-scrollbar {
@@ -205,7 +209,7 @@ interface StyledSelectItemProps {
 }
 
 const StyledSelectItem = styled.div<StyledSelectItemProps>`
-  padding: 4px;
+  padding: 8px;
   width: fit-content;
   border: ${(props) => (props.multiple ? "1px solid gray" : "none")};
   border-radius: ${(props) => (props.multiple ? "12px" : "")};
@@ -229,6 +233,7 @@ const StyledDiv = styled.div`{
   display: flex;
   flex-direction: column;
   padding: 8px;
+  width: 100%;
 `;
 
 export default Dropdown;
