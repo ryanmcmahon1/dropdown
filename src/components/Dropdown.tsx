@@ -156,11 +156,16 @@ const Dropdown = ({
         <SelectContainer>
           <SelectItems />
         </SelectContainer>
-        <ArrowIcon
-          height="18px"
-          width="18px"
-          style={{ cursor: "pointer", minWidth: "18px", marginLeft: "8px" }}
-        />
+        <div style={{ height: "100%", alignItems: "center", display: "flex" }}>
+          <ArrowIcon
+            height="18px"
+            width="18px"
+            style={{
+              minWidth: "18px",
+              marginLeft: "8px",
+            }}
+          />
+        </div>
       </Select>
       {showMenu && (
         <Menu>
@@ -199,18 +204,19 @@ const Dropdown = ({
 };
 
 const Select = styled.div`
-  border: 1px solid black;
+  border: 1px solid #accef7;
   border-radius: 4px;
   padding: 8px;
   max-height: 400px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   cursor: pointer;
   overflow-y: scroll;
-  user-select: none;
   ::-webkit-scrollbar {
     display: none;
+  }
+  &:hover {
+    border: 1px solid #57a4fe;
   }
 `;
 
@@ -230,6 +236,7 @@ const StyledSelectItem = styled.div<StyledSelectItemProps>`
   width: fit-content;
   border: ${(props) => (props.multiple ? "1px solid gray" : "none")};
   border-radius: ${(props) => (props.multiple ? "12px" : "")};
+  background-color: ${(props) => (props.multiple ? "#F5F5F5" : "")};
   cursor: default;
 `;
 
