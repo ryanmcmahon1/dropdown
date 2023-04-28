@@ -213,7 +213,7 @@ const Select = styled.div`
   justify-content: space-between;
   cursor: pointer;
   &:hover {
-    border: 2px solid #57a4fe;
+    border: 2px solid #469bff;
   }
 `;
 
@@ -237,7 +237,7 @@ const StyledSelectItem = styled.div<StyledSelectItemProps>`
   width: fit-content;
   border: ${(props) => (props.multiple ? "2px solid #73B4FF" : "none")};
   border-radius: ${(props) => (props.multiple ? "12px" : "")};
-  background-color: ${(props) => (props.multiple ? "#ACCEF7" : "")};
+  background-color: ${(props) => (props.multiple ? "#E5EFFB" : "")};
   cursor: default;
   &:hover {
     border: 2px solid #0078ff;
