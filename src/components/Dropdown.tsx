@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as CloseIcon } from "../close.svg";
 
@@ -26,6 +26,11 @@ const Dropdown = ({
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const selectRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLInputElement>(null);
+
+  const optionsMemo: Array<Option> = useMemo(
+    () => structuredClone(options),
+    [options]
+  );
 
   // closes menu if user clicks outside of select
   // useEffect(() => {
@@ -128,7 +133,25 @@ const Dropdown = ({
       </Select>
       {showMenu && (
         <Menu ref={menuRef}>
-          {options.map((option: Option) => {
+          {multiple && (
+            <StyledMenuItem
+              onClick={() => {
+                if (optionsMemo.length === selected.length) {
+                  optionsMemo.forEach((option) => (option.selected = false));
+                  setSelected([]);
+                  setShowMenu(false);
+                } else {
+                  optionsMemo.forEach((option) => (option.selected = true));
+                  setSelected(optionsMemo);
+                }
+              }}
+            >
+              {optionsMemo.length === selected.length
+                ? "Deselect all"
+                : "Select all"}
+            </StyledMenuItem>
+          )}
+          {optionsMemo.map((option: Option) => {
             return <MenuItem option={option} key={option.value} />;
           })}
         </Menu>
@@ -142,6 +165,11 @@ const Select = styled.div`
   border-radius: 4px;
   padding: 8px;
   cursor: pointer;
+  max-height: 200px;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 interface StyledSelectItemProps {
